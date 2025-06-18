@@ -23,8 +23,8 @@
 int main() {
     entt::registry registry;
 
-    add_body(registry, 5.0, 100.0, "Earth", Pos(0.0, -100.0), Vel(-100.0, 0.0));
-    add_body(registry, 5.0, 100.0, "Earth", Pos(-500.0, -100.0), Vel(0.0, 0.0));
+    add_body(registry, 0.5, 10.0, "Earth", Pos(100.0, 0.0), Vel(0.0, 150.0));
+    add_body(registry, 1000000000000000.0, 25.0, "Sun", Pos(0.0, 0.0), Vel(0.0, 0.0));
 
     sf::RenderWindow window(sf::VideoMode(WINDOW_W, WINDOW_H), WINDOW_TITLE);
     sf::Clock deltaClock;
@@ -42,8 +42,11 @@ int main() {
         }
 
         // world logic
+        reset_forces(registry);
+        compute_gravity_forces(registry);
+        apply_gravity_forces(registry, dt);
         velocity(registry, dt);
-        gravity(registry, dt);
+        // gravity(registry, dt);
 
         // rendering
         window.clear();
