@@ -1,9 +1,9 @@
 #pragma once
 
 struct Force {
-    float x;
-    float y;
+    double x;
+    double y;
 
     Force() : x(0), y(0) {}
-    Force(float x, float y) : x(x), y(y) {}
+    Force(double x, double y) : x(x), y(y) {}
 };

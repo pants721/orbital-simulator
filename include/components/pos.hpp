@@ -1,8 +1,8 @@
 #pragma once
 
 struct Pos {
-    float x;
-    float y;
+    double x;
+    double y;
 
-    Pos(float x, float y) : x(x), y(y) {}
+    Pos(double x, double y) : x(x), y(y) {}
 };

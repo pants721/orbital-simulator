@@ -1,9 +1,9 @@
 #pragma once
 
 struct Vel {
-    float dx;
-    float dy;
+    double dx;
+    double dy;
 
-    Vel(float dx, float dy) : dx(dx), dy(dy) {}
+    Vel(double dx, double dy) : dx(dx), dy(dy) {}
 };
 

@@ -10,7 +10,16 @@
 #include "components/pos.hpp"
 #include "components/vel.hpp"
 #include "entt/entity/fwd.hpp"
-#include "util.hpp"
+
+void add_body(entt::registry &registry, double mass, double radius, 
+              std::string name, Pos pos, Vel vel) {
+    const auto entity = registry.create();
+    registry.emplace<Body>(entity, mass, radius, name);
+    registry.emplace<Pos>(entity, pos.x, pos.y);
+    registry.emplace<Vel>(entity, vel.dx, vel.dy);
+    registry.emplace<Force>(entity);
+}
+
 
 void reset_forces(entt::registry &registry) {
     auto view = registry.view<Force>();
@@ -22,57 +31,52 @@ void reset_forces(entt::registry &registry) {
 
 void compute_gravity_forces(entt::registry &registry) {
     auto view = registry.view<Body, Pos, Force>();
+    std::vector<entt::entity> entities(view.begin(), view.end());
 
-    for (auto [entity_a, body_a, pos_a, force_a] : view.each()) {
-        auto &mass_a = body_a.mass;
+    for (size_t i = 0; i < entities.size(); ++i) {
+        auto entity_a = entities[i];
+        auto [body_a, pos_a, force_a] = view.get<Body, Pos, Force>(entity_a);
 
-        for (auto [entity_b, body_b, pos_b, force_b] : view.each()) {
-            if (entity_a == entity_b) continue;
+        for (size_t j = i + 1; j < entities.size(); ++j) {
+            auto entity_b = entities[j];
+            auto [body_b, pos_b, force_b] = view.get<Body, Pos, Force>(entity_b);
 
-            auto &mass_b = body_b.mass;
+            double dx = pos_b.x - pos_a.x;
+            double dy = pos_b.y - pos_a.y;
+            double d_sq = dx * dx + dy * dy;
+            double dist = std::sqrt(d_sq);
 
-            float dx = pos_b.x - pos_a.x;
-            float dy = pos_b.y - pos_a.y;
-            float d_sq = dx * dx + dy * dy;
-            float dist = std::sqrt(d_sq);
+            if (dist == 0.0) continue;
 
-            float force_mag = G_CONST * mass_a * mass_b / dist;
-            float fx = force_mag * dx / dist;
-            float fy = force_mag * dy / dist;
+            double force_mag = G_CONST * body_a.mass * body_b.mass / d_sq;
+            double fx = force_mag * dx / dist;
+            double fy = force_mag * dy / dist;
 
             force_a.x += fx;
             force_a.y += fy;
+
+            force_b.x -= fx;
+            force_b.y -= fy;
         }
     }
 }
 
-void apply_gravity_forces(entt::registry &registry, float dt) {
+void apply_gravity_forces(entt::registry &registry, double dt) {
     auto view = registry.view<Body, Vel, Force>();
 
     for (auto [entity, body, vel, force] : view.each()) {
-        float ax = force.x / body.mass;
-        float ay = force.y / body.mass;
+        double ax = force.x / body.mass;
+        double ay = force.y / body.mass;
 
         vel.dx += ax * dt;
         vel.dy += ay * dt;
-        if (body.name == "Earth") {
-            std::cout << "Acc: "<< ax << ", " << ay << std::endl;
-            std::cout << "Vel: "<< vel.dx << ", " << vel.dy << std::endl;
-        }
     }
 }
 
-void velocity(entt::registry &registry, float dt) {
+void velocity(entt::registry &registry, double dt) {
     auto view = registry.view<Pos, Vel>();
     for (auto [entity, pos, vel] : view.each()) {
         pos.x += vel.dx * dt;
         pos.y += vel.dy * dt;
-    }
-}
-
-void gravity(entt::registry &registry, float dt) {
-    auto view = registry.view<Body, Vel>();
-    for (auto [entity, body, vel] : view.each()) {
-        vel.dy += -90.8 * dt;
     }
 }
