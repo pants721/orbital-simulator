@@ -18,3 +18,8 @@ void zoom_camera_log(Camera &cam, double factor) {
     cam.zoom *= factor;
     cam.zoom = std::clamp(cam.zoom, ZOOM_MIN, ZOOM_MAX);
 }
+
+void pan_camera(Camera &cam, double dx, double dy) {
+    cam.x += dx;
+    cam.y += dy;
+}

@@ -1,6 +1,6 @@
 #pragma once
 
-#define ZOOM_DEFAULT 1.0 / 3e3
+#define ZOOM_DEFAULT 1.0 / 3e8
 
 struct Camera {
     int x, y;

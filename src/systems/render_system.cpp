@@ -4,6 +4,7 @@
 #include <entt/entt.hpp>
 
 #include "components/camera.hpp"
+#include "components/color.hpp"
 #include "components/pos.hpp"
 #include "components/vel.hpp"
 #include "components/body.hpp"
@@ -14,11 +15,11 @@ void render_bodies(entt::registry &registry, sf::RenderWindow &window) {
     if (cam_view.empty()) return;
     Camera &cam = cam_view.get<Camera>(cam_view.front());
 
-    auto view = registry.view<const Body, Pos, Vel>();
+    auto view = registry.view<const Body, Pos, Vel, Color>();
 
-    for (auto [entity, body, pos, vel] : view.each()) {
+    for (auto [entity, body, pos, vel, color] : view.each()) {
         Pos screen_pos = world_pos_to_screen(pos, cam, window);
-        double screen_radius = std::max(body.radius * cam.zoom, 5.0);
+        double screen_radius = std::max(body.radius * cam.zoom, MIN_RADIUS);
 
         // culling
         if (screen_pos.x + screen_radius < 0 || screen_pos.x - screen_radius > window.getSize().x ||
@@ -27,15 +28,7 @@ void render_bodies(entt::registry &registry, sf::RenderWindow &window) {
         }
 
         sf::CircleShape shape(screen_radius);
-        if (body.name == "Earth") {
-            shape.setFillColor(sf::Color::Blue);
-        } else if (body.name == "Sun") {
-            shape.setFillColor(sf::Color::Red);
-        } else if (body.name == "Moon") {
-            shape.setFillColor(sf::Color::White);
-        } else {
-            shape.setFillColor(sf::Color::Green);
-        }
+        shape.setFillColor(sf::Color(color.r, color.g, color.b));
         shape.setPosition(screen_pos.x - screen_radius, screen_pos.y - screen_radius);
         window.draw(shape);
     }

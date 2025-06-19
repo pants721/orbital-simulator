@@ -6,18 +6,20 @@
 #include <iostream>
 
 #include "components/body.hpp"
+#include "components/color.hpp"
 #include "components/force.hpp"
 #include "components/pos.hpp"
 #include "components/vel.hpp"
 #include "entt/entity/fwd.hpp"
 
 void add_body(entt::registry &registry, double mass, double radius, 
-              std::string name, Pos pos, Vel vel) {
+              std::string name, Pos pos, Vel vel, Color color) {
     const auto entity = registry.create();
     registry.emplace<Body>(entity, mass, radius, name);
     registry.emplace<Pos>(entity, pos.x, pos.y);
     registry.emplace<Vel>(entity, vel.dx, vel.dy);
     registry.emplace<Force>(entity);
+    registry.emplace<Color>(entity, color.r, color.g, color.b);
 }
 
 
