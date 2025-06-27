@@ -3,7 +3,8 @@
 #include "systems/camera_system.hpp"
 
 #include <algorithm>
-#include <iostream>
+
+#include "common.hpp"
 
 void add_camera(entt::registry &registry) {
     const auto entity = registry.create();
@@ -21,7 +22,6 @@ void zoom_camera_log(Camera &cam, double factor) {
 }
 
 void pan_camera(Camera &cam, double dx, double dy, double dt) {
-    std::cout << cam.zoom << std::endl;
-    cam.x += dx * (1.0 / cam.zoom) * dt;
-    cam.y += dy * (1.0 / cam.zoom) * dt;
+    cam.x += dx / cam.zoom;
+    cam.y += -dy / cam.zoom;
 }

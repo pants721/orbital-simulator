@@ -13,15 +13,7 @@
 #include "systems/render_system.hpp"
 #include "systems/physics_system.hpp"
 #include "systems/camera_system.hpp"
-
-#define WINDOW_TITLE "Orbital Simulation"
-#define WINDOW_W 1920
-#define WINDOW_H 1080
-
-#define TIME_SCALE 5.0e5
-
-constexpr double AU = 1.496e11;
-constexpr double SUN_MASS = 1.989e30;
+#include "common.hpp"
 
 int main() {
     entt::registry registry;
@@ -104,22 +96,31 @@ int main() {
             }
         }
 
+        auto cam_view = registry.view<Camera>();
+        Camera &cam = registry.get<Camera>(cam_view.front());
+
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Q)) {
-            auto cam_view = registry.view<Camera>();
-            Camera &cam = registry.get<Camera>(cam_view.front());
-            zoom_camera_log(cam, 0.999);
+            zoom_camera_log(cam, 1.0 - ZOOM_FACTOR);
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::E)) {
-            auto cam_view = registry.view<Camera>();
-            Camera &cam = registry.get<Camera>(cam_view.front());
-            zoom_camera_log(cam, 1.001);
+            zoom_camera_log(cam, 1.0 + ZOOM_FACTOR);
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
-            auto cam_view = registry.view<Camera>();
-            Camera &cam = registry.get<Camera>(cam_view.front());
-            pan_camera(cam, 0.0, 1.0, dt);
+            pan_camera(cam, 0.0, PAN_SPEED, dt);
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
+            pan_camera(cam, 0.0, -PAN_SPEED, dt);
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
+            pan_camera(cam, -PAN_SPEED, 0.0, dt);
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
+            pan_camera(cam, PAN_SPEED, 0.0, dt);
         }
 
         // world logic

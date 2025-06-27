@@ -10,6 +10,7 @@ src_files = files(
   'src/systems/physics_system.cpp',
   'src/systems/render_system.cpp',
   'src/systems/camera_system.cpp',
+  'src/utils/camera_utils.cpp'
 )
 
 executable('orbit-sim', src_files,

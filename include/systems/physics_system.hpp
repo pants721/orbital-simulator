@@ -7,8 +7,6 @@
 #include "components/pos.hpp"
 #include "components/vel.hpp"
 
-const double G_CONST = 6.6743e-11;
-
 entt::entity add_body(entt::registry &registry, double mass, double radius, 
               std::string name, Pos pos, Vel vel, Color color);
 

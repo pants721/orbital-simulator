@@ -11,6 +11,7 @@
 #include "components/pos.hpp"
 #include "components/tracer.hpp"
 #include "components/vel.hpp"
+#include "common.hpp"
 #include "entt/entity/fwd.hpp"
 
 entt::entity add_body(entt::registry &registry, double mass, double radius, 
