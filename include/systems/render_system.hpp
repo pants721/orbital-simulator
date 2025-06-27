@@ -2,10 +2,14 @@
 
 #include "components/camera.hpp"
 #include "components/pos.hpp"
+#include "entt/entity/fwd.hpp"
 #include <SFML/Graphics.hpp>
 #include <entt/entt.hpp>
 
 #define MIN_RADIUS 2.0
 
 void render_bodies(entt::registry &registry, sf::RenderWindow &window);
+void update_tracers(entt::registry &registry);
+void render_tracers(entt::registry &registry, sf::RenderWindow &window);
+
 Pos world_pos_to_screen(Pos &world_pos, Camera &camera, sf::RenderWindow &window);

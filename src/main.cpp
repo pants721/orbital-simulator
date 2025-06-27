@@ -2,15 +2,14 @@
 #include <SFML/Graphics.hpp>
 
 #include <cstdlib>
-#include <iostream>
 #include <string>
 
 #include "SFML/Window/Keyboard.hpp"
 #include "components/camera.hpp"
 #include "components/pos.hpp"
 #include "components/vel.hpp"
-#include "components/body.hpp"
 
+#include "entt/entity/fwd.hpp"
 #include "systems/render_system.hpp"
 #include "systems/physics_system.hpp"
 #include "systems/camera_system.hpp"
@@ -19,17 +18,15 @@
 #define WINDOW_W 1920
 #define WINDOW_H 1080
 
-#define TIME_SCALE 3.15e6
+#define TIME_SCALE 5.0e5
 
-// 1 astronomical unit (AU) in meters
 constexpr double AU = 1.496e11;
-
-// Sun mass (center of simulation)
 constexpr double SUN_MASS = 1.989e30;
 
 int main() {
     entt::registry registry;
     add_camera(registry);
+
     // Sun
     add_body(registry, SUN_MASS, 6.9634e8, "Sun",
              Pos(0.0, 0.0), Vel(0.0, 0.0),
@@ -52,6 +49,11 @@ int main() {
              Pos(1.0 * AU, 0.0),
              Vel(0.0, std::sqrt(G_CONST * SUN_MASS / (1.0 * AU))),
              Color(0, 102, 204)); // Blue
+
+    add_body(registry, 7.342e22, 1.7371e6, "Moon",
+             Pos(1.0 * AU + 384.4e6, 0.0),  // Relative to Sun
+             Vel(0.0, std::sqrt(G_CONST * SUN_MASS / (1.0 * AU)) + 1022.0), // Earth's orbital velocity + Moon's
+             Color(200, 200, 200)); // Light gray
 
     // Mars
     add_body(registry, 6.39e23, 3.39e6, "Mars",
@@ -91,7 +93,6 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(WINDOW_W, WINDOW_H), WINDOW_TITLE);
     sf::Clock deltaClock;
 
-    // Main loop
     while (window.isOpen()) {
         double dt = deltaClock.restart().asSeconds() * TIME_SCALE;
 
@@ -118,7 +119,7 @@ int main() {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
             auto cam_view = registry.view<Camera>();
             Camera &cam = registry.get<Camera>(cam_view.front());
-            pan_camera(cam, 0.0, 1.0);
+            pan_camera(cam, 0.0, 1.0, dt);
         }
 
         // world logic
@@ -126,13 +127,11 @@ int main() {
         compute_gravity_forces(registry);
         apply_gravity_forces(registry, dt);
         velocity(registry, dt);
-        auto view = registry.view<Body, Pos, Vel>();
-        for (auto [e, b, p, v] : view.each()) {
-            std::cout << b.name << ": pos=(" << p.x << ", " << p.y << "), vel=(" << v.dx << ", " << v.dy << ")\n";
-        }
 
         // rendering
         window.clear();
+        update_tracers(registry);
+        render_tracers(registry, window);
         render_bodies(registry, window);
         window.display();
     }

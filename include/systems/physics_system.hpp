@@ -9,7 +9,7 @@
 
 const double G_CONST = 6.6743e-11;
 
-void add_body(entt::registry &registry, double mass, double radius, 
+entt::entity add_body(entt::registry &registry, double mass, double radius, 
               std::string name, Pos pos, Vel vel, Color color);
 
 void reset_forces(entt::registry &registry);

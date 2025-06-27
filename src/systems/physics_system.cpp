@@ -9,17 +9,22 @@
 #include "components/color.hpp"
 #include "components/force.hpp"
 #include "components/pos.hpp"
+#include "components/tracer.hpp"
 #include "components/vel.hpp"
 #include "entt/entity/fwd.hpp"
 
-void add_body(entt::registry &registry, double mass, double radius, 
+entt::entity add_body(entt::registry &registry, double mass, double radius, 
               std::string name, Pos pos, Vel vel, Color color) {
     const auto entity = registry.create();
     registry.emplace<Body>(entity, mass, radius, name);
     registry.emplace<Pos>(entity, pos.x, pos.y);
     registry.emplace<Vel>(entity, vel.dx, vel.dy);
     registry.emplace<Force>(entity);
+    // XXX: IDK IF COLOR AND TRACER SHOULD BE IN PHYSICS SYSTEM. MAYBE REPLACE
+    // WITH RENDERABLE COMPONENT
     registry.emplace<Color>(entity, color.r, color.g, color.b);
+    registry.emplace<Tracer>(entity);
+    return entity;
 }
 
 
