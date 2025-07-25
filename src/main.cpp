@@ -4,7 +4,9 @@
 #include <cstdlib>
 #include <string>
 
+#include "SFML/Window/ContextSettings.hpp"
 #include "SFML/Window/Keyboard.hpp"
+#include "SFML/Window/WindowStyle.hpp"
 #include "components/camera.hpp"
 #include "components/pos.hpp"
 #include "components/vel.hpp"
@@ -82,7 +84,13 @@ int main() {
              Pos(39.48 * AU, 0.0),
              Vel(0.0, std::sqrt(G_CONST * SUN_MASS / (39.48 * AU))),
              Color(220, 220, 220)); // Light gray
-    sf::RenderWindow window(sf::VideoMode(WINDOW_W, WINDOW_H), WINDOW_TITLE);
+
+
+    // SFML setup
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 8;
+
+    sf::RenderWindow window(sf::VideoMode(WINDOW_W, WINDOW_H), WINDOW_TITLE, sf::Style::Default, settings);
     sf::Clock deltaClock;
 
     while (window.isOpen()) {
