@@ -1,4 +1,6 @@
 # TODO
 - [ ] Bloom Effect
-- [ ] Trail Effect
+- [x] Trail Effect
 - [ ] Renderable component
+- [ ] Settings window
+- [ ] Code cleanup

@@ -3,8 +3,6 @@
 #include <cmath>
 #include <entt/entt.hpp>
 #include <SFML/Graphics.hpp>
-#include <iostream>
-
 #include "components/body.hpp"
 #include "components/color.hpp"
 #include "components/force.hpp"
@@ -14,15 +12,15 @@
 #include "common.hpp"
 #include "entt/entity/fwd.hpp"
 
-entt::entity add_body(entt::registry &registry, double mass, double radius, 
-              std::string name, Pos pos, Vel vel, Color color) {
+auto add_body(entt::registry &registry, double mass, double radius, 
+              std::string name, Pos pos, Vel vel, Color color) -> entt::entity {
     const auto entity = registry.create();
     registry.emplace<Body>(entity, mass, radius, name);
     registry.emplace<Pos>(entity, pos.x, pos.y);
     registry.emplace<Vel>(entity, vel.dx, vel.dy);
     registry.emplace<Force>(entity);
     // XXX: IDK IF COLOR AND TRACER SHOULD BE IN PHYSICS SYSTEM. MAYBE REPLACE
-    // WITH RENDERABLE COMPONENT
+    // WITH RENDERABLE COMPONENT OR MOVE THIS TO A UTIL FILE
     registry.emplace<Color>(entity, color.r, color.g, color.b);
     registry.emplace<Tracer>(entity);
     return entity;
@@ -51,12 +49,12 @@ void compute_gravity_forces(entt::registry &registry) {
 
             double dx = pos_b.x - pos_a.x;
             double dy = pos_b.y - pos_a.y;
-            double d_sq = dx * dx + dy * dy;
+            double d_sq = (dx * dx) + (dy * dy);
             double dist = std::sqrt(d_sq);
 
             if (dist == 0.0) continue;
 
-            double force_mag = G_CONST * body_a.mass * body_b.mass / d_sq;
+            double force_mag = kGConst * body_a.mass * body_b.mass / d_sq;
             double fx = force_mag * dx / dist;
             double fy = force_mag * dy / dist;
 

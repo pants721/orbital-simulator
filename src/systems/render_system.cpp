@@ -24,7 +24,7 @@ void render_bodies(entt::registry &registry, sf::RenderWindow &window) {
 
     for (auto [entity, body, pos, vel, color] : view.each()) {
         Pos screen_pos = to_screen_pos(pos, cam, window);
-        double screen_radius = std::max(body.radius * cam.zoom, (long double)MIN_RADIUS);
+        double screen_radius = std::max(body.radius * cam.zoom, kMinRadius);
 
         // culling
         if (screen_pos.x + screen_radius < 0 || screen_pos.x - screen_radius > window.getSize().x ||
@@ -32,9 +32,9 @@ void render_bodies(entt::registry &registry, sf::RenderWindow &window) {
             continue;
         }
 
-        sf::CircleShape shape(screen_radius);
+        sf::CircleShape shape(static_cast<float>(screen_radius));
         shape.setFillColor(sf::Color(color.r, color.g, color.b));
-        shape.setPosition(screen_pos.x - screen_radius, screen_pos.y - screen_radius);
+        shape.setPosition(static_cast<float>(screen_pos.x - screen_radius), static_cast<float>(screen_pos.y - screen_radius));
         window.draw(shape);
     }
 }
@@ -62,9 +62,17 @@ void render_tracers(entt::registry &registry, sf::RenderWindow &window) {
         sf::VertexArray line(sf::LineStrip, tracer.points.size());
         for (size_t i = 0; i < tracer.points.size(); ++i) {
             Pos screen_pos = to_screen_pos(tracer.points[i], cam, window);
-            line[i].position = sf::Vector2<float>(screen_pos.x, screen_pos.y);
-            line[i].color = sf::Color(color.r, color.g, color.b, static_cast<sf::Uint8>(
-                255.0f * (float(i) / tracer.points.size()))); // Fading effect
+            line[i].position = sf::Vector2<float>(
+                static_cast<float>(screen_pos.x), 
+                static_cast<float>(screen_pos.y)
+            );
+
+            line[i].color = sf::Color(
+                color.r, color.g, color.b,
+                static_cast<sf::Uint8>(
+                    (static_cast<float>(i) / tracer.points.size()) * 255.0F // NOLINT
+                )
+            );  // Fading effect
         }
 
         window.draw(line);

@@ -3,14 +3,14 @@
 #include "SFML/System/Vector2.hpp"
 #include "components/pos.hpp"
 
-Pos to_screen_pos(Pos &world_pos, Camera &cam, sf::RenderWindow &window) {
-    sf::Vector2f screen_center(window.getSize().x / 2.0f, window.getSize().y / 2.0f);
-    return Pos((world_pos.x - cam.x) * cam.zoom + screen_center.x,
-                        (world_pos.y - cam.y) * cam.zoom + screen_center.y);
+auto to_screen_pos(Pos &world_pos, Camera &cam, sf::RenderWindow &window) -> Pos {
+    sf::Vector2<double> screen_center(window.getSize().x / 2.0, window.getSize().y / 2.0);
+    return {static_cast<double>((cam.zoom * (world_pos.x - cam.x)) + screen_center.x), // NOLINT
+            static_cast<double>((cam.zoom * (world_pos.y - cam.y)) + screen_center.y)}; // NOLINT
 }
 
-Pos to_world_pos(Pos &screen_pos, Camera &cam, sf::RenderWindow &window) {
-    sf::Vector2f screen_center(window.getSize().x / 2.0f, window.getSize().y / 2.0f);
-    return Pos((screen_pos.x - screen_center.x) / cam.zoom + cam.x,
-               -(screen_pos.y - screen_center.y) / cam.zoom + cam.y);
+auto to_world_pos(Pos &screen_pos, Camera &cam, sf::RenderWindow &window) -> Pos {
+    sf::Vector2<double> screen_center(window.getSize().x / 2.0, window.getSize().y / 2.0);
+    return {static_cast<double>(((screen_pos.x - screen_center.x) / cam.zoom) + cam.x), // NOLINT
+            static_cast<double>((-(screen_pos.y - screen_center.y) / cam.zoom) + cam.y)}; // NOLINT
 }

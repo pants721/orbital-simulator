@@ -7,8 +7,8 @@
 #include "components/pos.hpp"
 #include "components/vel.hpp"
 
-entt::entity add_body(entt::registry &registry, double mass, double radius, 
-              std::string name, Pos pos, Vel vel, Color color);
+auto add_body(entt::registry &registry, double mass, double radius, 
+              std::string name, Pos pos, Vel vel, Color color) -> entt::entity;
 
 void reset_forces(entt::registry &registry);
 

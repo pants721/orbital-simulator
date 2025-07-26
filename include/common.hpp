@@ -3,20 +3,22 @@
 #include <string>
 
 // Rendering
-const std::string WINDOW_TITLE = "Orbital Simulation";
-constexpr double WINDOW_W = 1920.0;
-constexpr double WINDOW_H = 1080.0;
-constexpr double ZOOM_MIN = 1.0e-90;
-constexpr double ZOOM_MAX = 1000.0;
-constexpr double ZOOM_FACTOR = 0.01;
-constexpr double MIN_RADIUS = 1.0;
-constexpr double PAN_SPEED = 4.0;
+const std::string kWindowTitle = "Orbital Simulation";
+constexpr double kWindowW = 1920.0;
+constexpr double kWindowH = 1080.0;
+constexpr double kZoomMin = 1.0e-90;
+constexpr double kZoomMax = 1000.0;
+constexpr double kZoomFactor = 0.01;
+constexpr double kZoomDefault = 1.0 / 3e8;
+constexpr double kMinRadius = 1.0;
+constexpr double kPanSpeed = 4.0;
 
-constexpr double TIME_SCALE = 5.0e5;
+constexpr double kTimeScale = 5.0e5;
+constexpr size_t kMaxTracerLength = 2000;
 
 // Physics
-constexpr double AU = 1.496e11;
-const double G_CONST = 6.6743e-11;
+constexpr double kAu = 1.496e11;
+const double kGConst = 6.6743e-11;
 
 // MISC
-constexpr double SUN_MASS = 1.989e30;
+constexpr double kSunMass = 1.989e30;

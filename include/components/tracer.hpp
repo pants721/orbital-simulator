@@ -1,12 +1,12 @@
 #pragma once
 
 #include "components/pos.hpp"
-#include <cstdlib>
+#include "common.hpp"
 #include <deque>
 
 struct Tracer {
     std::deque<Pos> points;
     size_t max_points;
 
-    Tracer() : points(), max_points(2000) {}
+    Tracer() : max_points(kMaxTracerLength) {}
 };

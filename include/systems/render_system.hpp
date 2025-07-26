@@ -1,8 +1,5 @@
 #pragma once
 
-#include "components/camera.hpp"
-#include "components/pos.hpp"
-#include "entt/entity/fwd.hpp"
 #include <SFML/Graphics.hpp>
 #include <entt/entt.hpp>
 

@@ -13,15 +13,15 @@ void add_camera(entt::registry &registry) {
 
 void zoom_camera(Camera &cam, double delta) {
     cam.zoom += delta;
-    cam.zoom = std::clamp(cam.zoom, ZOOM_MIN, ZOOM_MAX);
+    cam.zoom = std::clamp(cam.zoom, kZoomMin, kZoomMax);
 }
 
 void zoom_camera_log(Camera &cam, double factor) {
     cam.zoom *= factor;
-    cam.zoom = std::clamp(cam.zoom, ZOOM_MIN, ZOOM_MAX);
+    cam.zoom = std::clamp(cam.zoom, kZoomMin, kZoomMax);
 }
 
-void pan_camera(Camera &cam, double dx, double dy, double dt) {
+void pan_camera(Camera &cam, double dx, double dy) {
     cam.x += dx / cam.zoom;
     cam.y += -dy / cam.zoom;
 }

@@ -27,6 +27,7 @@ Checks: >
   performance-*,
   portability-*,
   readability-*,
+  -bugprone-easily-swappable-parameters,
   -google-readability-namespace-comments,
   -google-runtime-int,
   -google-runtime-references,
@@ -58,4 +59,5 @@ CheckOptions:
   - { key: readability-identifier-naming.MemberConstantPrefix,     value: k         }
   - { key: readability-identifier-naming.StaticConstantCase,       value: CamelCase }
   - { key: readability-identifier-naming.StaticConstantPrefix,     value: k         }
-  - { key: readability-identifier-naming.VariableMinLength,      value: 2          }
+  - { key: readability-identifier-length.MinimumVariableNameLength,      value: 2   }
+  - { key: readability-identifier-length.MinimumParameterNameLength,     value: 1   }

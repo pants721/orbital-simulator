@@ -3,8 +3,8 @@
 #include <string>
 
 struct Body {
-  long double mass;
-  long double radius;
+  double mass;
+  double radius;
   std::string name;
 
   Body(double mass, double radius, std::string name)
