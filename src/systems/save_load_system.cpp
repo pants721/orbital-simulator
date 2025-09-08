@@ -1,4 +1,5 @@
 #include "systems/save_load_system.hpp"
+#include "components/name.hpp"
 #include "entt/entity/fwd.hpp"
 
 #include <entt/entt.hpp>
@@ -12,11 +13,14 @@ using json = nlohmann::json;
 #include "components/vel.hpp"
 
 auto serialize_registry_state(entt::registry &registry) -> json {
-    auto view = registry.view<Body, Pos, Vel>();
+    auto view = registry.view<Name, Body, Pos, Vel>();
     json state_json = json::array();
 
-    for (auto [entity, body, pos, vel] : view.each()) {
+    for (auto [entity, name, body, pos, vel] : view.each()) {
         json entity_json;
+
+        json name_json = name.serialize();
+        entity_json["name"] = name_json;
 
         json body_json = body.serialize();
         entity_json["body"] = body_json;

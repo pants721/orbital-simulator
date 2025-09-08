@@ -8,10 +8,8 @@ using json = nlohmann::json;
 struct Body {
     double mass;
     double radius;
-    std::string name;
 
-    Body(double mass, double radius, std::string name)
-    : mass(mass), radius(radius), name(std::move(name)) {}
+    Body(double mass, double radius) : mass(mass), radius(radius) {}
 
     // TODO(pants): ADD #IFDEF ENABLE_JSON
     auto serialize() -> json;

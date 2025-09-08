@@ -15,6 +15,7 @@ src_files = files(
   'src/components/body.cpp',
   'src/components/pos.cpp',
   'src/components/vel.cpp',
+  'src/components/name.cpp',
   'src/systems/save_load_system.cpp',
 )
 
