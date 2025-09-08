@@ -1,11 +1,14 @@
 #include "systems/save_load_system.hpp"
 #include "components/color.hpp"
+#include "components/force.hpp"
 #include "components/name.hpp"
+#include "components/tracer.hpp"
 #include "entt/entity/fwd.hpp"
 
 #include <entt/entt.hpp>
 #include <filesystem>
 #include <fstream>
+#include <iostream>
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
@@ -13,6 +16,18 @@ using json = nlohmann::json;
 #include "components/pos.hpp"
 #include "components/vel.hpp"
 #include "components/color.hpp"
+
+auto add_body(entt::registry &registry, Name name, Body body, Pos pos, Vel vel, Color color) -> entt::entity {
+    const auto entity = registry.create();
+    registry.emplace<Body>(entity, body.mass, body.radius);
+    registry.emplace<Name>(entity, name.value);
+    registry.emplace<Pos>(entity, pos.x, pos.y);
+    registry.emplace<Vel>(entity, vel.dx, vel.dy);
+    registry.emplace<Force>(entity);
+    registry.emplace<Color>(entity, color.r, color.g, color.b);
+    registry.emplace<Tracer>(entity);
+    return entity;
+}
 
 auto serialize_registry_state(entt::registry &registry) -> json {
     auto view = registry.view<Name, Color, Body, Pos, Vel>();
@@ -46,4 +61,15 @@ void save_registry(entt::registry &registry, const std::string &file_path) {
     json state_json = serialize_registry_state(registry);
     std::ofstream file(file_path);
     file << state_json;
+}
+
+void deserialize_registry(entt::registry &registry, const json &state_json) {
+    for (auto entity : state_json) {
+        Name name = Name::deserialize(entity["name"]);
+        Color color = Color::deserialize(entity["color"]);
+        Body body = Body::deserialize(entity["body"]);
+        Pos pos = Pos::deserialize(entity["pos"]);
+        Vel vel = Vel::deserialize(entity["vel"]);
+        add_body(registry, name, body, pos, vel, color);
+    }
 }

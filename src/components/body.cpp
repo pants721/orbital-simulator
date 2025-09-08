@@ -3,7 +3,7 @@
 auto Body::serialize() -> json {
     json js;
     js["mass"] = this->mass;
-    js["radius"] = this->mass;
+    js["radius"] = this->radius;
     return js;
 }
 

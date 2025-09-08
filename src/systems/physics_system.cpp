@@ -13,21 +13,6 @@
 #include "common.hpp"
 #include "entt/entity/fwd.hpp"
 
-// TODO(pants): MOVE THIS FUNCTION
-auto add_body(entt::registry &registry, double mass, double radius, 
-              std::string name, Pos pos, Vel vel, Color color) -> entt::entity {
-    const auto entity = registry.create();
-    registry.emplace<Body>(entity, mass, radius);
-    registry.emplace<Name>(entity, name);
-    registry.emplace<Pos>(entity, pos.x, pos.y);
-    registry.emplace<Vel>(entity, vel.dx, vel.dy);
-    registry.emplace<Force>(entity);
-    registry.emplace<Color>(entity, color.r, color.g, color.b);
-    registry.emplace<Tracer>(entity);
-    return entity;
-}
-
-
 void reset_forces(entt::registry &registry) {
     auto view = registry.view<Force>();
     for (auto [entity, force] : view.each()) {
