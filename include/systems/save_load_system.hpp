@@ -15,4 +15,5 @@ auto add_body(entt::registry &registry, Name name, Body body, Pos pos, Vel vel, 
 auto serialize_registry_state(entt::registry &registry) -> json;
 void save_registry(entt::registry &registry, const std::string &file_path);
 void deserialize_registry(entt::registry &registry, const json &state_json);
+void load_registry_state(entt::registry &registry, const std::string &file_path);
 

@@ -28,10 +28,7 @@ auto main() -> int {
     entt::registry registry;
     add_camera(registry);
 
-    std::ifstream file("data.json");
-    json state_json;
-    file >> state_json;
-    deserialize_registry(registry, state_json);
+    load_registry_state(registry, "data.json");
 
     // SFML setup
     sf::ContextSettings settings;

@@ -73,3 +73,10 @@ void deserialize_registry(entt::registry &registry, const json &state_json) {
         add_body(registry, name, body, pos, vel, color);
     }
 }
+
+void load_registry_state(entt::registry &registry, const std::string &file_path) {
+    std::ifstream file(file_path);
+    json state_json;
+    file >> state_json;
+    deserialize_registry(registry, state_json);
+}
