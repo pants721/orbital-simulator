@@ -2,16 +2,11 @@
 
 #include <cmath>
 #include <entt/entt.hpp>
-#include <SFML/Graphics.hpp>
 #include "components/body.hpp"
-#include "components/color.hpp"
 #include "components/force.hpp"
-#include "components/name.hpp"
 #include "components/pos.hpp"
-#include "components/tracer.hpp"
 #include "components/vel.hpp"
 #include "common.hpp"
-#include "entt/entity/fwd.hpp"
 
 void reset_forces(entt::registry &registry) {
     auto view = registry.view<Force>();

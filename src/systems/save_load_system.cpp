@@ -3,12 +3,9 @@
 #include "components/force.hpp"
 #include "components/name.hpp"
 #include "components/tracer.hpp"
-#include "entt/entity/fwd.hpp"
 
 #include <entt/entt.hpp>
-#include <filesystem>
 #include <fstream>
-#include <iostream>
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 

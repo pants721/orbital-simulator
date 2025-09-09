@@ -1,8 +1,7 @@
-#include <entt/entt.hpp>
-
 #include "systems/camera_system.hpp"
 
 #include <algorithm>
+#include <entt/entt.hpp>
 
 #include "common.hpp"
 

@@ -8,5 +8,6 @@ struct Tracer {
     std::deque<Pos> points;
     size_t max_points;
 
+    // XXX: idk abt this constant
     Tracer() : max_points(kMaxTracerLength) {}
 };

@@ -10,7 +10,6 @@
 #include "components/tracer.hpp"
 #include "components/vel.hpp"
 #include "components/body.hpp"
-#include "entt/entity/fwd.hpp"
 #include "common.hpp"
 #include "utils/camera_utils.hpp"
 

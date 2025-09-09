@@ -5,9 +5,8 @@
 #include "components/name.hpp"
 #include "components/pos.hpp"
 #include "components/vel.hpp"
-#include "entt/entity/fwd.hpp"
-#include <entt/entt.hpp>
 
+#include <entt/entt.hpp>
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
