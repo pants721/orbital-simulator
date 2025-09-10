@@ -84,8 +84,6 @@ auto main() -> int {
             pan_camera(cam, kPanSpeed, 0.0);
         }
 
-        camera_follow_target(registry);
-
         // world logic
         reset_forces(registry);
         compute_gravity_forces(registry);
@@ -94,6 +92,7 @@ auto main() -> int {
 
         // rendering
         window.clear();
+        camera_follow_target(registry);
         update_tracers(registry);
         render_tracers(registry, window);
         render_bodies(registry, window);
