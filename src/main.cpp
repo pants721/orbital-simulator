@@ -18,6 +18,7 @@
 
 #include "entt/entity/fwd.hpp"
 #include "nlohmann/json.hpp"
+#include "systems/gui_system.hpp"
 using json = nlohmann::json;
 #include "systems/render_system.hpp"
 #include "systems/physics_system.hpp"
@@ -47,14 +48,14 @@ auto main() -> int {
     sf::Clock delta_clock;
 
     // XXX: temp while i figure out the actual way to setup following
-    auto body_view = registry.view<Name, Body, Pos>();
-    for (auto [entity, name, body, pos] : body_view.each()) {
-        if (name.value == "Earth") {
-            auto cam_view = registry.view<Camera>();
-            Camera &cam = registry.get<Camera>(cam_view.front());
-            set_camera_follow_target(registry, cam, entity);
-        }
-    }
+    // auto body_view = registry.view<Name, Body, Pos>();
+    // for (auto [entity, name, body, pos] : body_view.each()) {
+    //     if (name.value == "Earth") {
+    //         auto cam_view = registry.view<Camera>();
+    //         Camera &cam = registry.get<Camera>(cam_view.front());
+    //         set_camera_follow_target(registry, cam, entity);
+    //     }
+    // }
 
     while (window.isOpen()) {
         double delta_t = delta_clock.restart().asSeconds() * kTimeScale;
@@ -102,10 +103,9 @@ auto main() -> int {
 
         // gui
         ImGui::SFML::Update(window, delta_clock.restart());
-        ImGui::ShowDemoWindow();
 
-        ImGui::Begin("Hello, world!");
-        ImGui::Button("Look at this pretty button");
+        ImGui::Begin("Settings");
+        camera_follow_dropdown(registry);
         ImGui::End();
 
         // rendering

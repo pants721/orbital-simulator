@@ -43,10 +43,10 @@ void camera_follow_target(entt::registry &registry) {
     }
 }
 
-void set_camera_follow_target(entt::registry &registry, Camera &cam, entt::entity target) {
+void set_camera_follow_target(entt::registry &registry, Camera &cam, std::optional<entt::entity> target) {
     const auto cam_entity = entt::to_entity(registry, cam);
     if (registry.all_of<FollowTarget>(cam_entity)) {
         FollowTarget &curr_target = registry.get<FollowTarget>(cam_entity);
-        curr_target.target = std::optional(target);
+        curr_target.target = target;
     }
 }
