@@ -28,7 +28,7 @@ using json = nlohmann::json;
 
 auto main() -> int {
     entt::registry registry;
-    add_camera(registry);
+    add_camera(registry, Name("Main Camera"));
 
     load_registry_state(registry, "data.json");
 

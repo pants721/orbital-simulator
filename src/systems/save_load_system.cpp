@@ -16,12 +16,12 @@ using json = nlohmann::json;
 
 auto add_body(entt::registry &registry, Name name, Body body, Pos pos, Vel vel, Color color) -> entt::entity {
     const auto entity = registry.create();
-    registry.emplace<Body>(entity, body.mass, body.radius);
-    registry.emplace<Name>(entity, name.value);
-    registry.emplace<Pos>(entity, pos.x, pos.y);
-    registry.emplace<Vel>(entity, vel.dx, vel.dy);
+    registry.emplace_or_replace<Body>(entity, body);
+    registry.emplace_or_replace<Name>(entity, name);
+    registry.emplace_or_replace<Pos>(entity, pos);
+    registry.emplace_or_replace<Vel>(entity, vel);
     registry.emplace<Force>(entity);
-    registry.emplace<Color>(entity, color.r, color.g, color.b);
+    registry.emplace_or_replace<Color>(entity, color);
     registry.emplace<Tracer>(entity);
     return entity;
 }
