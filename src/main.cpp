@@ -4,12 +4,13 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
+#include <optional>
 #include <ostream>
 #include <string>
 
 #include "SFML/Window/ContextSettings.hpp"
 #include "SFML/Window/Keyboard.hpp"
-#include "SFML/Window/WindowStyle.hpp"
+#include "SFML/Window/WindowEnums.hpp"
 #include "components/body.hpp"
 #include "components/camera.hpp"
 #include "components/pos.hpp"
@@ -32,11 +33,18 @@ auto main() -> int {
 
     // SFML setup
     sf::ContextSettings settings;
-    settings.antialiasingLevel = 8;
+    settings.antiAliasingLevel = 8;
 
-    sf::RenderWindow window(sf::VideoMode(kWindowW, kWindowH), kWindowTitle, sf::Style::Default, settings);
+    sf::RenderWindow window(
+        sf::VideoMode({static_cast<unsigned int>(kWindowW), static_cast<unsigned int>(kWindowH)}), 
+        kWindowTitle, 
+        sf::Style::Default, 
+        sf::State::Fullscreen,
+        settings
+    );
     sf::Clock delta_clock;
 
+    // XXX: temp while i figure out the actual way to setup following
     auto body_view = registry.view<Name, Body, Pos>();
     for (auto [entity, name, body, pos] : body_view.each()) {
         if (name.value == "Earth") {
@@ -49,10 +57,8 @@ auto main() -> int {
     while (window.isOpen()) {
         double delta_t = delta_clock.restart().asSeconds() * kTimeScale;
 
-        sf::Event event;
-
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
+        while (const std::optional event = window.pollEvent()) {
+            if (event->is<sf::Event::Closed>()) {
                 window.close();
             }
         }

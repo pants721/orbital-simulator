@@ -1,6 +1,8 @@
 #include "systems/render_system.hpp"
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/PrimitiveType.hpp>
 #include <algorithm>
+#include <cstdint>
 #include <entt/entt.hpp>
 
 #include "SFML/System/Vector2.hpp"
@@ -33,7 +35,7 @@ void render_bodies(entt::registry &registry, sf::RenderWindow &window) {
 
         sf::CircleShape shape(static_cast<float>(screen_radius));
         shape.setFillColor(sf::Color(color.r, color.g, color.b));
-        shape.setPosition(static_cast<float>(screen_pos.x - screen_radius), static_cast<float>(screen_pos.y - screen_radius));
+        shape.setPosition({static_cast<float>(screen_pos.x - screen_radius), static_cast<float>(screen_pos.y - screen_radius)});
         window.draw(shape);
     }
 }
@@ -58,7 +60,7 @@ void render_tracers(entt::registry &registry, sf::RenderWindow &window) {
     auto view = registry.view<Tracer, Color>();
 
     for (auto [entity, tracer, color] : view.each()) {
-        sf::VertexArray line(sf::LineStrip, tracer.points.size());
+        sf::VertexArray line(sf::PrimitiveType::LineStrip, tracer.points.size());
         for (size_t i = 0; i < tracer.points.size(); ++i) {
             Pos screen_pos = to_screen_pos(tracer.points[i], cam, window);
             line[i].position = sf::Vector2<float>(
@@ -68,7 +70,7 @@ void render_tracers(entt::registry &registry, sf::RenderWindow &window) {
 
             line[i].color = sf::Color(
                 color.r, color.g, color.b,
-                static_cast<sf::Uint8>(
+                static_cast<uint8_t>(
                     (static_cast<float>(i) / tracer.points.size()) * 255.0F // NOLINT
                 )
             );  // Fading effect

@@ -2,7 +2,9 @@ project('orbit-sim', 'cpp')
 
 incdir = include_directories('include')
 
-sfml_dep = dependency('sfml')
+sfml_dep = dependency('sfml', version : '>=3.0.0')
+imgui_dep = dependency('imgui')
+imgui_sfml_dep = dependency('imgui-sfml')
 entt_dep = dependency('entt')
 json_dep = dependency('nlohmann_json')
 
@@ -21,5 +23,5 @@ src_files = files(
 )
 
 executable('orbit-sim', src_files,
-  dependencies: [sfml_dep, entt_dep, json_dep],
+  dependencies: [sfml_dep, imgui_dep, imgui_sfml_dep, entt_dep, json_dep],
   include_directories: incdir)
