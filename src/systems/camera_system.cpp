@@ -8,15 +8,17 @@
 #include "common.hpp"
 #include "components/follow_target.hpp"
 #include "components/pos.hpp"
+#include "components/name.hpp"
 #include "entt/entity/helper.hpp"
 
 void update_camera(entt::registry &registry) {
     camera_follow_target(registry);
 }
 
-void add_camera(entt::registry &registry) {
+void add_camera(entt::registry &registry, Name name) {
     const auto entity = registry.create();
     registry.emplace<FollowTarget>(entity);
+    registry.emplace_or_replace<Name>(entity, name);
     registry.emplace<Camera>(entity);
 }
 
