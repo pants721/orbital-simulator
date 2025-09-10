@@ -37,6 +37,15 @@ auto main() -> int {
     sf::RenderWindow window(sf::VideoMode(kWindowW, kWindowH), kWindowTitle, sf::Style::Default, settings);
     sf::Clock delta_clock;
 
+    auto body_view = registry.view<Name, Body, Pos>();
+    for (auto [entity, name, body, pos] : body_view.each()) {
+        if (name.value == "Earth") {
+            auto cam_view = registry.view<Camera>();
+            Camera &cam = registry.get<Camera>(cam_view.front());
+            set_camera_follow_target(registry, cam, entity);
+        }
+    }
+
     while (window.isOpen()) {
         double delta_t = delta_clock.restart().asSeconds() * kTimeScale;
 
@@ -74,6 +83,8 @@ auto main() -> int {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
             pan_camera(cam, kPanSpeed, 0.0);
         }
+
+        camera_follow_target(registry);
 
         // world logic
         reset_forces(registry);

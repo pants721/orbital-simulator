@@ -3,6 +3,7 @@
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
+// XXX: Maybe rename transform
 struct Pos {
     double x;
     double y;
