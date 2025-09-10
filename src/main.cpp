@@ -47,16 +47,6 @@ auto main() -> int {
 
     sf::Clock delta_clock;
 
-    // XXX: temp while i figure out the actual way to setup following
-    // auto body_view = registry.view<Name, Body, Pos>();
-    // for (auto [entity, name, body, pos] : body_view.each()) {
-    //     if (name.value == "Earth") {
-    //         auto cam_view = registry.view<Camera>();
-    //         Camera &cam = registry.get<Camera>(cam_view.front());
-    //         set_camera_follow_target(registry, cam, entity);
-    //     }
-    // }
-
     while (window.isOpen()) {
         double delta_t = delta_clock.restart().asSeconds() * kTimeScale;
 
@@ -110,10 +100,8 @@ auto main() -> int {
 
         // rendering
         window.clear();
-        camera_follow_target(registry);
-        update_tracers(registry);
-        render_tracers(registry, window);
-        render_bodies(registry, window);
+        update_camera(registry);
+        render(registry, window);
         ImGui::SFML::Render(window);
         window.display();
     }

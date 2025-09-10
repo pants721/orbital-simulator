@@ -15,6 +15,12 @@
 #include "common.hpp"
 #include "utils/camera_utils.hpp"
 
+void render(entt::registry &registry, sf::RenderWindow &window) {
+    update_tracers(registry);
+    render_tracers(registry, window);
+    render_bodies(registry, window);
+}
+
 void render_bodies(entt::registry &registry, sf::RenderWindow &window) {
     auto cam_view = registry.view<Camera>();
     // XXX: ERROR LOGGING

@@ -49,22 +49,18 @@ void focus_body_settings(entt::registry &registry) {
         return;
     }
 
+    std::vector<std::string> items = {};
     auto bodies_view = registry.view<Name, Body, Pos>();
-    std::vector<std::string> items = {"None"};
     for (auto [entity, name, body, pos] : bodies_view.each()) {
         items.push_back(name.value);
     }
     // XXX: probably should make the currently selected body a component in the registry
     size_t selected_idx = settings_dropdown("Focused Body", items);
-    
-    // `None` is selected
-    if (selected_idx == 0) {
-        set_camera_follow_target(registry, cam, std::nullopt);
-        return;
-    }
 
     std::string selected_name = items[selected_idx];
     for (auto [entity, name, body, pos] : bodies_view.each()) {
+        // XXX: what happens if two bodies have the same name
+        // prob like store a map of items index to entity id
         if (name.value == selected_name) {
             set_camera_follow_target(registry, cam, std::optional(entity));
         }

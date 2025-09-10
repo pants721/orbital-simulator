@@ -6,6 +6,7 @@
 #include "components/camera.hpp"
 #include "entt/entity/fwd.hpp"
 
+void update_camera(entt::registry &registry);
 void add_camera(entt::registry &registry);
 // XXX:
 void zoom_camera(Camera &cam, double delta);
