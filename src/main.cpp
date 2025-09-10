@@ -1,5 +1,7 @@
 #include <entt/entt.hpp>
 #include <SFML/Graphics.hpp>
+#include <imgui.h>
+#include <imgui-SFML.h>
 
 #include <cstdlib>
 #include <fstream>
@@ -8,9 +10,7 @@
 #include <ostream>
 #include <string>
 
-#include "SFML/Window/ContextSettings.hpp"
-#include "SFML/Window/Keyboard.hpp"
-#include "SFML/Window/WindowEnums.hpp"
+
 #include "components/body.hpp"
 #include "components/camera.hpp"
 #include "components/pos.hpp"
@@ -42,6 +42,8 @@ auto main() -> int {
         sf::State::Fullscreen,
         settings
     );
+    ImGui::SFML::Init(window); // NOLINT
+
     sf::Clock delta_clock;
 
     // XXX: temp while i figure out the actual way to setup following
@@ -58,6 +60,8 @@ auto main() -> int {
         double delta_t = delta_clock.restart().asSeconds() * kTimeScale;
 
         while (const std::optional event = window.pollEvent()) {
+            ImGui::SFML::ProcessEvent(window, *event);
+
             if (event->is<sf::Event::Closed>()) {
                 window.close();
             }
@@ -96,14 +100,24 @@ auto main() -> int {
         apply_gravity_forces(registry, delta_t);
         velocity(registry, delta_t);
 
+        // gui
+        ImGui::SFML::Update(window, delta_clock.restart());
+        ImGui::ShowDemoWindow();
+
+        ImGui::Begin("Hello, world!");
+        ImGui::Button("Look at this pretty button");
+        ImGui::End();
+
         // rendering
         window.clear();
         camera_follow_target(registry);
         update_tracers(registry);
         render_tracers(registry, window);
         render_bodies(registry, window);
+        ImGui::SFML::Render(window);
         window.display();
     }
+    ImGui::SFML::Shutdown();
 
     return EXIT_SUCCESS;
 }
