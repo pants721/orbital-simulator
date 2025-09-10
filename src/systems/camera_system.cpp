@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cstdio>
 #include <entt/entt.hpp>
+#include <optional>
 
 #include "common.hpp"
 #include "components/follow_target.hpp"
@@ -49,4 +50,8 @@ void set_camera_follow_target(entt::registry &registry, Camera &cam, std::option
         FollowTarget &curr_target = registry.get<FollowTarget>(cam_entity);
         curr_target.target = target;
     }
+}
+
+void set_camera_follow_none(entt::registry &registry, Camera &cam) {
+    set_camera_follow_target(registry, cam, std::nullopt);
 }

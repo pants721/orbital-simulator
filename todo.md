@@ -4,3 +4,9 @@
 - [ ] Renderable component
 - [ ] Settings window
 - [ ] Code cleanup
+- [ ] organize main loop
+- [x] camera follow
+- [ ] cli
+- [ ] file structure 
+- [ ] error handling
+- [ ] tracers relative to body orbiting (so like the moon would have tracer around the earth)

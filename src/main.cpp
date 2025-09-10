@@ -105,7 +105,7 @@ auto main() -> int {
         ImGui::SFML::Update(window, delta_clock.restart());
 
         ImGui::Begin("Settings");
-        camera_follow_dropdown(registry);
+        focus_body_settings(registry);
         ImGui::End();
 
         // rendering

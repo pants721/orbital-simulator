@@ -1,4 +1,7 @@
 #pragma once
 
 #include "entt/entity/fwd.hpp"
-void camera_follow_dropdown(entt::registry &registry);
+#include <vector>
+auto settings_checkbox(const std::string &text) -> bool;
+auto settings_dropdown(const std::string &label, const std::vector<std::string> &items) -> size_t;
+void focus_body_settings(entt::registry &registry);
