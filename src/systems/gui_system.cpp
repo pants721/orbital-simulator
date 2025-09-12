@@ -1,5 +1,6 @@
 #include "systems/gui_system.hpp"
 
+#include <cstddef>
 #include <entt/entt.hpp>
 #include <optional>
 
@@ -22,10 +23,10 @@ auto settings_dropdown(const std::string &label, const std::vector<std::string> 
     static int selected_idx = 0;
 
     if (ImGui::BeginCombo(label.c_str(), items[selected_idx].c_str())) {
-        for (int i = 0; i < items.size(); ++i) {
+        for (size_t i = 0; i < items.size(); ++i) {
             const bool is_selected = (selected_idx == i);
             if (ImGui::Selectable(items[i].c_str(), is_selected)) {
-                selected_idx = i;
+                selected_idx = static_cast<int>(i);
             }
 
             if (is_selected) {
