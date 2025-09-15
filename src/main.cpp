@@ -98,6 +98,10 @@ auto main() -> int {
         focus_body_settings(registry);
         ImGui::End();
 
+        ImGui::Begin("Body Info");
+        body_info_widget(registry);
+        ImGui::End();
+
         // rendering
         window.clear();
         update_camera(registry);

@@ -5,8 +5,10 @@
 #include <optional>
 
 #include "components/body.hpp"
+#include "components/force.hpp"
 #include "components/name.hpp"
 #include "components/pos.hpp"
+#include "components/vel.hpp"
 #include "imgui.h"
 #include "systems/camera_system.hpp"
 
@@ -37,6 +39,29 @@ auto settings_dropdown(const std::string &label, const std::vector<std::string> 
     }
 
     return selected_idx;
+}
+
+void body_info_widget(entt::registry &registry) {
+    auto bodies_view = registry.view<Name, Body, Pos, Vel, Force>();
+    if (ImGui::BeginTable("Body Information", 4, ImGuiTableFlags_Borders | ImGuiTableFlags_Resizable)) {
+        ImGui::TableSetupColumn("Name");
+        ImGui::TableSetupColumn("Position");
+        ImGui::TableSetupColumn("Velocity");
+        ImGui::TableSetupColumn("Force");
+        ImGui::TableHeadersRow();
+        for (auto [entity, name, body, pos, vel, force] : bodies_view.each()) {
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
+            ImGui::Text("%s", name.value.c_str());
+            ImGui::TableNextColumn();
+            ImGui::Text("(%f, %f)", pos.x, pos.y);
+            ImGui::TableNextColumn();
+            ImGui::Text("(%f, %f)", vel.dx, vel.dy);
+            ImGui::TableNextColumn();
+            ImGui::Text("(%f, %f)", force.x, force.y);
+        }
+        ImGui::EndTable();
+    }
 }
 
 void focus_body_settings(entt::registry &registry) {
